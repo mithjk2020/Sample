@@ -13,7 +13,7 @@ create(){
   sudo touch /home/admin/mentors/$1/"$men"/allocatedMentees.txt
   sudo touch /home/admin/mentors/$1/"$men"/cap.txt
   sudo chmod 777 /home/admin/mentors/$1/"$men"/cap.txt
-  sudo sh -c "echo '$cap' > /home/admin/mentors/'$1'/'$men'/cap.txt"
+  echo "$cap" | sudo tee /home/admin/mentors/$1/"$men"/cap.txt > /dev/null
   sudo mkdir -p /home/admin/mentors/$1/"$men"/submittedTasks/task{1..3}
 }
 
@@ -25,13 +25,9 @@ do
    sudo chown "$name":"$name" /home/admin/mentees/"$name"
    sudo chmod 755 /home/admin/mentees/"$name"
    echo "$name:deltaforce@2024" | sudo chpasswd
-   sudo touch /home/admin/mentees/"$name"/domain_pref.txt
-   sudo touch /home/admin/mentees/"$name"/task_completed.txt
-   sudo touch /home/admin/mentees/"$name"/task_submitted.txt
+   sudo touch /home/admin/mentees/"$name"/{domain_pref.txt,task_completed.txt,task_submitted.txt}
    sudo chmod 777 /home/admin/mentees/"$name"/.bashrc
-   sudo chmod 777 /home/admin/mentees/"$name"/domain_pref.txt
-   sudo chmod 777 /home/admin/mentees/"$name"/task_completed.txt
-   sudo chmod 777 /home/admin/mentees/"$name"/task_submitted.txt
+   sudo chmod 777 /home/admin/mentees/"$name"/{domain_pref.txt,task_completed.txt,task_submitted.txt}
    sudo tee /home/admin/mentees/"$name"/task_submitted.txt > /dev/null <<EOF
    sysAd:
     Task1: n
@@ -77,3 +73,5 @@ do
 done < mentorDetails.txt
 sudo touch /home/admin/mentees_domain.txt
 sudo chmod 766 /home/admin/mentees_domain.txt
+sudo chown -R admin:admin /home/admin
+sudo chmod -R 755 /home/admin
